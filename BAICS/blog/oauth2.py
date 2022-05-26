@@ -1,7 +1,10 @@
 from fastapi import Depends, FastAPI, HTTPException, status
 
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-import token
+from . import token
+verify_token=token.verify_token
+
+
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 async def get_current_user(token: str = Depends(oauth2_scheme)):
@@ -10,6 +13,5 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
-
-    return token.verify_token(token, credentials_exception)
+    return verify_token(token, credentials_exception)
     

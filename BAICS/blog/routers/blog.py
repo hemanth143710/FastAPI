@@ -18,7 +18,7 @@ def create(request: schemas.Blog, db: Session = Depends(get_db)):
     return blog.create(request, db)
     
 @router.get('/blog',response_model=List[schemas.ShowBlog],tags=['blog'])
-def all(db: Session = Depends(get_db),get_current_user: schemas.User = Depends(get_current_user)):
+def all(db: Session = Depends(get_db),current_user: schemas.User = Depends(get_current_user)):
     return blog.get_all(db)
    
 @router.get('/blog/{id}',response_model=schemas.ShowBlog,tags=['blog'])
@@ -31,7 +31,7 @@ def show(id:int,  db: Session = Depends(get_db)):
     return blog
 
 @router.delete('/blog/{id}',status_code=status.HTTP_204_NO_CONTENT,tags=['blog'])
-def destroy(id:int, db : Session = Depends(get_db)):
+def destroy(id:int, db : Session = Depends(get_db),current_user: schemas.User = Depends(get_current_user)):
     # blog = db.query(models.Blog).filter(models.Blog.id == id)
     # if not blog.first():
     #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"Blog with id {id} not found")
